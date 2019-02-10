@@ -14,6 +14,7 @@ class GitHubLogin extends Component {
   save = event => {
     event.preventDefault()
     const token = this.state.token.trim()
+    localStorage.setItem('github-token', token)
     this.props.onTokenChange(token)
   }
 

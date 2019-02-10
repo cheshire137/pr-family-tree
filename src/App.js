@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
-import './App.css';
 import Tree from './Tree';
+import {BaseStyles} from '@primer/components';
+import './App.css';
 import GitHubLogin from './GitHubLogin';
-
-const githubTokenKey = 'github-token'
+import GitHubLogoutButton from './GitHubLogoutButton';
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = { token: localStorage.getItem(githubTokenKey) || '' }
+    this.state = { token: localStorage.getItem('github-token') || '' }
   }
 
   onTokenChange = token => {
-    localStorage.setItem(githubTokenKey, token)
     this.setState(prevState => ({ token }))
-  }
-
-  logout = event => {
-    event.target.blur()
-    localStorage.removeItem(githubTokenKey)
-    this.setState(prevState => ({ token: '' }))
   }
 
   render() {
@@ -27,24 +20,25 @@ class App extends Component {
     const loggedIn = typeof token === 'string' && token.length > 0
 
     return (
-      <div className="App">
-        {loggedIn ? (
-          <button
-            type="button"
-            onClick={this.logout}
-          >Log out</button>
-        ) : null}
-        <header className="App-header">
+      <BaseStyles>
+        <div className="App">
           {loggedIn ? (
-            <Tree />
-          ) : (
-            <GitHubLogin
-              onTokenChange={this.onTokenChange}
-              token={token}
+            <GitHubLogoutButton
+              onLogout={this.onTokenChange}
             />
-          )}
-        </header>
-      </div>
+          ) : null}
+          <header className="App-header">
+            {loggedIn ? (
+              <Tree />
+            ) : (
+              <GitHubLogin
+                onTokenChange={this.onTokenChange}
+                token={token}
+              />
+            )}
+          </header>
+        </div>
+      </BaseStyles>
     );
   }
 }
