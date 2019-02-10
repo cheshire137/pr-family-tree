@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Flash } from '@primer/components';
+import { Flash, Box, Heading, Label } from '@primer/components';
 
 const Tree = () => (
   <Query
@@ -36,9 +36,21 @@ const Tree = () => (
       return (
         <div>
           {data.viewer.pullRequests.nodes.map(pull => (
-            <div key={pull.id}>
-              {pull.title}
-            </div>
+            <Box
+              p={2}
+              m={2}
+              key={pull.id}
+            >
+              <Heading
+                fontSize={2}
+                mb={1}
+              >{pull.title}</Heading>
+              <div>
+                {pull.repository.nameWithOwner}
+                <span> &middot; </span>
+                <Label outline>{pull.baseRefName}</Label> &larr; <Label outline>{pull.headRefName}</Label>
+              </div>
+            </Box>
           ))}
         </div>
       );
