@@ -22,12 +22,7 @@ class App extends Component {
     return (
       <BaseStyles>
         <div className="App">
-          {loggedIn ? (
-            <GitHubLogoutButton
-              onLogout={this.onTokenChange}
-            />
-          ) : null}
-          <header className="App-header">
+          <div>
             {loggedIn ? (
               <PullRequestTree />
             ) : (
@@ -36,7 +31,12 @@ class App extends Component {
                 token={token}
               />
             )}
-          </header>
+          </div>
+          {loggedIn ? (
+            <GitHubLogoutButton
+              onLogout={this.onTokenChange}
+            />
+          ) : null}
         </div>
       </BaseStyles>
     );

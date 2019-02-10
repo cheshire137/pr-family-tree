@@ -26,6 +26,7 @@ class GitHubLogoutButton extends Component {
 
           return (
             <Button
+              m={3}
               onClick={this.logout}
             >Log out {data.viewer.login}</Button>
           );
