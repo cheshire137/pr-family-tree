@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Tree from './Tree';
+import PullRequestTree from './PullRequestTree';
 import {BaseStyles} from '@primer/components';
 import './App.css';
 import GitHubLogin from './GitHubLogin';
@@ -29,7 +29,7 @@ class App extends Component {
           ) : null}
           <header className="App-header">
             {loggedIn ? (
-              <Tree />
+              <PullRequestTree />
             ) : (
               <GitHubLogin
                 onTokenChange={this.onTokenChange}
