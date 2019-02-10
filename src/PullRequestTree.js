@@ -2,8 +2,29 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Flash, Box, Heading, Label, Link, Text } from '@primer/components';
+import PullRequest from './PullRequest';
 
-const Tree = () => (
+const getBranchNames = pullRequests => {
+  const branchNames = {}
+  for (const pull of pullRequests) {
+    branchNames[pull.headRefName] = 1
+    branchNames[pull.baseRefName] = 1
+  }
+  return Object.keys(branchNames).sort()
+}
+
+const getPullRequestsByBaseBranch = pullRequests => {
+  const dict = {}
+  for (const pull of pullRequests) {
+    if (!(pull.baseRefName in dict)) {
+      dict[pull.baseRefName] = []
+    }
+    dict[pull.baseRefName].push(pull)
+  }
+  return dict
+}
+
+const PullRequestTree = () => (
   <Query
     query={gql`
       {
@@ -34,33 +55,34 @@ const Tree = () => (
         );
       }
 
+      const pullRequests = data.viewer.pullRequests.nodes
+      const branchNames = getBranchNames(pullRequests)
+      const pullRequestsByBranch = getPullRequestsByBaseBranch(pullRequests)
+
       return (
         <div>
-          {data.viewer.pullRequests.nodes.map(pull => (
-            <Box
-              p={2}
-              m={2}
-              key={pull.id}
-            >
-              <Heading
-                fontSize={2}
-                mb={1}
-              >
-                <Link href={pull.resourcePath}>{pull.title}</Link>
-              </Heading>
-              <div>
-                <Text
-                  fontSize={1}
-                >{pull.repository.nameWithOwner}</Text>
-                <span> &middot; </span>
-                <Label outline>{pull.baseRefName}</Label> &larr; <Label outline>{pull.headRefName}</Label>
-              </div>
-            </Box>
-          ))}
+          {branchNames.map(branchName => {
+            const pullRequestsForBranch = pullRequestsByBranch[branchName] || []
+
+            return (
+              <Box key={branchName} p={2}>
+                <Heading
+                  fontSize={3}
+                  mb={2}
+                >{branchName}</Heading>
+                {pullRequestsForBranch.map(pull => (
+                  <PullRequest
+                    key={pull.id}
+                    pull={pull}
+                  />
+                ))}
+              </Box>
+            )
+          })}
         </div>
       );
     }}
   </Query>
 );
 
-export default Tree;
+export default PullRequestTree;
