@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Flash, Box, Heading, Label } from '@primer/components';
+import { Flash, Box, Heading, Label, Link } from '@primer/components';
 
 const Tree = () => (
   <Query
@@ -14,6 +14,7 @@ const Tree = () => (
               title
               headRefName
               baseRefName
+              resourcePath
               repository {
                 nameWithOwner
               }
@@ -44,7 +45,9 @@ const Tree = () => (
               <Heading
                 fontSize={2}
                 mb={1}
-              >{pull.title}</Heading>
+              >
+                <Link href={pull.resourcePath}>{pull.title}</Link>
+              </Heading>
               <div>
                 {pull.repository.nameWithOwner}
                 <span> &middot; </span>
