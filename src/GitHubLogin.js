@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextInput, Button, Box, Link, Text } from '@primer/components';
 
 class GitHubLogin extends Component {
   constructor(props) {
@@ -26,18 +27,31 @@ class GitHubLogin extends Component {
 
   render() {
     return (
-      <form onSubmit={this.save}>
-        <input
-          type="text"
-          required
-          placeholder="GitHub personal access token"
-          onChange={this.onTokenChange}
-          value={this.state.token}
-        />
-        <button type="submit">
-          Save
-        </button>
-      </form>
+      <Box p={3}>
+        <form onSubmit={this.save}>
+          <Text
+            is="label"
+            fontSize={2}
+            htmlFor="github-token"
+          >GitHub personal access token:</Text>
+          <TextInput
+            type="text"
+            required
+            id="github-token"
+            m={1}
+            aria-label="GitHub personal access token"
+            placeholder="Your token"
+            onChange={this.onTokenChange}
+            value={this.state.token}
+          />
+          <Button type="submit">
+            Save
+          </Button>
+          <Text fontSize={1} is="p" color="gray.6">
+            Generate a personal access token on GitHub at <Link target="_blank" href="https://github.com/settings/tokens">github.com/settings/tokens</Link>.
+          </Text>
+        </form>
+      </Box>
     );
   }
 }
